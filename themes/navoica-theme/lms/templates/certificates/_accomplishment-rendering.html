@@ -1,0 +1,92 @@
+<%page expression_filter="h"/>
+<%! from django.utils.translation import ugettext as _ %>
+<%! from django.conf import settings %>
+<%namespace name='static' file='../static_content.html'/>
+<%
+course_mode_class = course_mode if course_mode else ''
+%>
+
+
+<div id="content" class="bg-light">
+    <main class="container">
+        <aside id="filters" class="sidebar">
+
+        </aside>
+
+        <section>
+            <div id="authentication">
+                <header>
+                    <div>Zaświadczenie</div>
+                </header>
+                <div>
+                    <div id="logos">
+                        <div id="platform"><img src="${settings.LMS_ROOT_URL}/static/images/logo-light-bg.svg" alt="Navoica"></div>
+                        <div id="administrator"><img
+                                src="${settings.LMS_ROOT_URL}/static/images/org/${organizer}.png" alt="${organizer}"></div>
+                    </div>
+                    <div id="person">
+                        <div class="hr"></div>
+                        <h1>${accomplishment_copy_name}</h1>
+                    </div>
+                    <div id="course">
+                        <div class="label">
+                            <div>ukończył/a kurs</div>
+                        </div>
+                        <div id="title">
+                            <div class="hr"></div>
+                            <h2>${accomplishment_copy_course_name}</h2>
+                        </div>
+                    </div>
+                    <div id="authentication-info">
+                        <div id="authentication-date">
+                            <div id="date">
+                                <div class="hr"></div>
+                                <div class="label">data uzyskania zaświadczenia</div>
+                                <div class="value">${certificate_date_issued}</div>
+                            </div>
+                            <div id="authentication-note">
+                                <div class="hr"></div>
+                                <p>Dokument poświadcza ukończenie kursu <strong>${accomplishment_copy_course_name}</strong> na platformie Navoica, którego organizatorem jest ${organizer}.</p>
+                                <%
+                                    certificate_url = request.build_absolute_uri()
+                                    if '/pdf' in certificate_url:
+                                        certificate_url = certificate_url.replace('/pdf','')
+                                %>
+                                <a href="${certificate_url}">weryfikacja</a>
+                            </div>
+                        </div>
+                        % if certificate_data:
+                        <div id="experts">
+                            <div class="hr"></div>
+                            <div class="label">eksperci</div>
+                            % for signatory in certificate_data.get('signatories', []):
+                            % if loop.index < 2:
+                            <div id="expert-${loop.index+1}">
+                                % if signatory['signature_image_path']:
+                                <div class="signature"><img style="max-width:
+                                 100%; max-height: 100%"
+                                                            class="signatory-signature"
+                                         src="${settings.LMS_ROOT_URL}${signatory['signature_image_path']}"></div>
+                                % endif
+                                <div class="value">${signatory['name']}</div>
+                                <div class="institution">${signatory['title']}</div>
+                            </div>
+                            % endif
+                            % endfor
+                        </div>
+                        % endif
+                    </div>
+                </div>
+                <footer></footer>
+            </div>
+
+            <div class="mt-4 text-center">
+                <a class="btn btn-primary" href='${settings.LMS_ROOT_URL}${request.path}/pdf?preview=${request.GET.get('preview','')}' role="button"><i class="fas fa-download"></i> Pobierz zaświadczenie</a>
+            </div>
+
+        </section>
+
+    </main>
+</div>
+
+<%include file="/footer.html" />

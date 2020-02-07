@@ -82,3 +82,30 @@ LANGUAGE_CODE = 'pl'
 DEFAULT_FROM_EMAIL = 'registration@'+LMS_BASE
 DEFAULT_FEEDBACK_EMAIL = 'feedback@'+LMS_BASE
 SERVER_EMAIL = 'devops@'+LMS_BASE
+
+########################## THEMING  #######################
+# If you want to enable theming in devstack, uncomment this section and add any relevant
+# theme directories to COMPREHENSIVE_THEME_DIRS
+
+# We have to import the private method here because production.py calls
+# derive_settings('lms.envs.production') which runs _make_mako_template_dirs with
+# the settings from production, which doesn't include these theming settings. Thus,
+# the templating engine is unable to find the themed templates because they don't exist
+# in it's path. Re-calling derive_settings doesn't work because the settings was already
+# changed from a function to a list, and it can't be derived again.
+
+from .common import _make_mako_template_dirs
+
+SITE_ID = 1
+# dir containing all themes
+COMPREHENSIVE_THEME_DIRS = [REPO_ROOT / "themes"]
+# Theme directory locale paths
+COMPREHENSIVE_THEME_LOCALE_PATHS = []
+# Theme to use when no site or site theme is defined,
+# set to None if you want to use openedx theme
+DEFAULT_SITE_THEME = 'navoica-theme'
+
+ENABLE_COMPREHENSIVE_THEMING = True
+
+TEMPLATES[1]["DIRS"] = _make_mako_template_dirs
+derive_settings(__name__)
