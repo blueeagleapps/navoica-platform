@@ -1,23 +1,81 @@
 
-	<a href="/courses/<%- course %>/about" class="card h-100">
-	  <div class="card-body d-flex flex-column flex-sm-row flex-md-row flex-lg-column">
-	    <figure>
-		<img class="card-img-top" src="<%- image_url %>" alt="" />
+            <div href="/courses/<%- course %>/about" class="card h-100">
+                <div class="card-body">
+                    <% if (is_new) { %>
+                        <span class="course-card-label"><%- interpolate(gettext("New")) %></span>
+                    <% } %>
+                    <h4 class="card-title"><a href="/courses/<%- course %>/about"><%- content.display_name %></a></h4>
+                    <div class="element">
+                        <span><%- org_text %></span>
+                    </div>
+                    <figure class="card-figure">
+                        <img class="card-img-top" src="<%- image_url %>" alt="">
+                    </figure>
+                    <div class="card-meta">
+                        <ul class="meta">
+                            <li><%- interpolate(gettext("category:")) %> <strong> <%- course_category %> </strong></li>
+                            <li><%- interpolate(gettext("difficulty:")) %> <strong> <%- difficulty %> </strong></li>
+                            <li><%- interpolate(gettext("type:")) %> <strong> <% if (self_paced) { %>
+                            <%- interpolate(gettext("Self-Paced")) %>
+                                <% }else { %>
+                            <%- interpolate(gettext("Instructor-Paced")) %>
+                            <% } %> </strong></li>
 
-		<% if (is_new) { %>
-			<span class="course-card-label">Nowy kurs</span>
-		<% } %>
-	    </figure>
-	      <div>
-		<h4 class="card-title"><%- content.display_name %></h4>
-		<p class="card-text">
-		<%- gettext(org_text) %>
-		</p>
-	      </div>
-	  </div>
+                        </ul>
+                    </div>
+                    <div class="card-desc">
+                        <p class="card-text">
+                            <%- content.short_description %>
+                        </p>
+                    </div>
+                </div>
 
-	  <div class="card-footer small">
-		<p><time class="course-card-start"><i class="icon-calendar"></i> <%- interpolate(gettext("Starts: %(start_date)s"),{ start_date: start }, true) %></time></p>
-	  </div>
-	</a>
+                 <% if (availability === meanings.availability.terms['Current']) { %>
+                       <% if (enrollment_flag) { %>
+                           <div class="card-footer">
+                                <a href="/courses/<%- course %>/about">
+                                <button type="button" class="btn btn-success">
+                                    <h5> <%- interpolate(gettext("Enroll")) %></h5>
+                                    <p> <%- interpolate(gettext("until")) %> <time class="course-card-start"><i class="icon-calendar"></i> <%- enrollment_end %> </time></p>
+                                </button>
+                                </a>
+                                <div>
+                                    <p><%- interpolate(gettext("Course starts:")) %><time class="course-card-start"><i class="icon-calendar"></i> <%- start %></time></p>
+                                </div>
+                           </div>
+                        <% }else { %>
+                            <div class="card-footer">
+                                <a href="/courses/<%- course %>/about">
+                                <button type="button" class="btn btn-success" disabled>
+                                    <h5><%- interpolate(gettext("Enroll")) %></h5>
+                                </button>
+                                </a>
+                                <div>
+                                    <p><%- interpolate(gettext("Enrollement time finished. Finish:")) %> <time class="course-card-start"><i class="icon-calendar"></i> <%- end %></time></p>
+                                </div>
+                            </div>
+                        <% } %>
+                 <% }else if (availability === meanings.availability.terms['Starting Soon']){ %>
+                        <div class="card-footer">
+                            <a href="/courses/<%- course %>/about">
+                            <button type="button" class="btn btn-success">
+                                <h5><%- interpolate(gettext("Enroll")) %></h5>
+                                <p><%- interpolate(gettext("until")) %> <time class="course-card-start"><i class="icon-calendar"></i> <%- start  %></time></p>
+                            </button>
+                            </a>
+                            <div>
+                                <p> <%- interpolate(gettext("Course finish:"))%><time class="course-card-start"><i class="icon-calendar"></i> <%- end %></time></p>
+                            </div>
+                       </div>
 
+                 <% }else { %>
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-success" disabled>
+                                <h5><%- interpolate(gettext("Enroll")) %></h5>
+                            </button>
+                            <div>
+                                <p><%- interpolate(gettext("Course finished:")) %><time class="course-card-start"><i class="icon-calendar"></i> <%- end %></time></p>
+                            </div>
+                        </div>
+                 <% } %>
+            </div>

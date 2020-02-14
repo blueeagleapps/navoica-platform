@@ -1,0 +1,38 @@
+
+            <div href="/courses/<%- course %>/about" class="card h-100">
+                <div class="card-body">
+                    <% if (is_new) { %>
+                        <span class="course-card-label">Nowy kurs</span>
+                    <% } %>
+                    <h4 class="card-title"><a href="/courses/<%- course %>/about"><%- content.display_name %></a></h4>
+                    <div class="element">
+                        <span>Centrum Kopernika Badań Interdyscyplinarnych</span>
+                    </div>
+                    <figure class="card-figure">
+                        <img class="card-img-top" src=src="<%- image_url %>" alt="">
+                    </figure>
+                    <div class="card-meta">
+                        <ul class="meta">
+                            <li>kategoria: <strong>nauki techniczne</strong></li>
+                            <li>poziom: <strong>początkujący</strong></li>
+                            <li>tryb nauki: <strong>w tempie własnym</strong></li>
+                        </ul>
+                    </div>
+                    <div class="card-desc">
+                        <p class="card-text">
+                            Capture amazing photos with our complete A-Z guide to travel photography: Equipment, Shooting, Editing and Sharing.
+                        </p>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="button" class="btn btn-success">
+                        <h5>Zapisz się na kurs</h5>
+                        <p>do 15 marca 2020</p>
+                    </button>
+                    <div>
+                        <p><time class="course-card-start"><i class="icon-calendar"></i> <%- interpolate(gettext("Starts: %(start_date)s"),{ start_date: start }, true) %></time></p>
+                    </div>
+                </div>
+            </div>
+
+

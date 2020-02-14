@@ -1,0 +1,78 @@
+## mako
+<%page expression_filter="h"/>
+<%!
+from datetime import date
+from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext as _
+from branding.api import get_footer
+from openedx.core.djangoapps.lang_pref.api import footer_language_selector_is_enabled
+from django.conf import settings
+%>
+<% footer = get_footer(is_secure=is_secure) %>
+<%namespace name='static' file='static_content.html'/>
+
+<footer class="border-top">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mr-auto">
+                <h4 class="mt-5 mb-3">${_('Navoica.pl')}</h4>
+                <p align="justify">${_('Polish MOOC platform offering free of charge online courses for every registered user.')}</p>
+                <p class="d-none">czytaj: Nawojka lub Nawoika</p>
+
+		<a href="https://www.facebook.com/Polski-MOOC-295767534600329/" target="_blank"><img src="/static/images/polskimooc_facebook_s.png" alt="Facebook"></a>
+            </div>
+
+            <div class="col-lg-3">
+                <h4 class="mt-5 mb-3">${_('About us')}</h4>
+                <ul>
+                    % for item_num, link in enumerate(footer['navigation_links'], start=1):
+                    <li>
+                        <a href="${link['url']}">${link['title']}</a>
+                    </li>
+                    % endfor
+                </ul>
+            </div>
+
+            <div class="col-lg-3">
+                <h4 class="mt-5 mb-3">${_('Legal information')}</h4>
+                <ul>
+                    <li><a href="/tos">${_('Terms of use')}</a></li>
+                    <li><a href="/privacy">${_('Privacy Policy')}</a></li>
+                    <li><a href="/honor">${_('Honor code ')}</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row footer-logos mt-5 pt-5 border-top">
+            <div class="col-lg-3 d-flex mb-3">
+                <img style="max-width:297px" src="/static/images/patrons/logo_mnisw.jpg" alt="Ministerstwo Nauki i Szkolnictwa Wyższego">
+            </div>
+            <div class="col-lg-3 d-flex mb-3">
+                <img style="max-width:128px" src="/static/images/patrons/logo_krasp.jpg" alt="KRASP">
+            </div>
+            <div class="col-lg-3 d-flex mb-3">
+                <img style="max-width:220px" src="/static/images/patrons/logo_fmn.jpg" alt="Fundacja Młodej Nauki">
+            </div>
+            <div class="col-lg-3 d-flex mb-3">
+                <img style="max-width:181px" src="/static/images/patrons/logo_opi_pib.png" alt="OPI - PIB">
+            </div>
+        </div>
+        <% current_year = date.today().year %>
+        <p class="footer-copyright"><span>&copy; Copyright 2018-${current_year} Navoica.pl</span> — ${_('All rights reserved  ')} | ver. Nawojka ${ settings.PLATFORM_VERSION }</p>
+    </div>
+</footer>
+
+% if include_dependencies:
+<%static:js group='base_vendor'/>
+<%static:css group='style-vendor'/>
+<%include file="widgets/segment-io.html" />
+<%include file="widgets/segment-io-footer.html" />
+% endif
+% if footer_css_urls:
+% for url in footer_css_urls:
+<link rel="stylesheet" type="text/css" href="${url}"></link>
+% endfor
+
+</body>
+</html>
+% endif

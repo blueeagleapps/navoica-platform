@@ -1,0 +1,20 @@
+## mako
+
+<%page expression_filter="h"/>
+
+<%namespace name='static' file='../static_content.html'/>
+
+<%!
+from django.utils.translation import ugettext as _
+%>
+<header id="courses-list-header">
+   <h2 id="h2">
+	<span class="d-none d-md-block">${_("Important Course Dates")}</span>
+    </h2>
+</header>
+## Should be organized by date, last date appearing at the bottom
+
+% for course_date in course_date_blocks:
+    <%include file="dates-summary.html" args="course_date=course_date" />
+% endfor
+

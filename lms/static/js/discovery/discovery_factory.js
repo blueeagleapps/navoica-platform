@@ -21,7 +21,7 @@
                     userLanguage: userLanguage,
                     userTimezone: userTimezone
                 };
-                listing = new CoursesListing({model: courseListingModel});
+                listing = new CoursesListing({model: courseListingModel, meanings: meanings});
 
                 dispatcher.listenTo(form, 'search', function(query) {
                     filters.reset();
@@ -38,13 +38,13 @@
                         search.refineSearch(filters.getTerms());
                     }
                 });
-                
+
                 dispatcher.listenTo(refineSidebar, 'selectListOption', function(type, query, name) {
                     form.showLoadingIndicator();
                     removeFilter(type);
 					filters.add({type: type, query: query, name: name});
 					search.refineSearch(filters.getTerms());
-                    
+
                 });
 
                 dispatcher.listenTo(filterBar, 'clearFilter', removeFilter);

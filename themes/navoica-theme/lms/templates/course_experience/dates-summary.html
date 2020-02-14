@@ -1,0 +1,27 @@
+<%!
+from django.utils.translation import ugettext as _
+%>
+<%page args="course_date" expression_filter="h"/>
+<li class="list-group-item">
+    <div class="date-summary date-summary-${course_date.css_class}">
+        % if course_date.title:
+            % if course_date.title == 'current_datetime':
+                <h6>Dzisiaj jest:</h6>
+                <span class="hd hd-6 heading localized-datetime" data-datetime="${course_date.date}" data-format="shortDate" data-timezone="UTC" data-language="pl"></span>
+            % else:
+                <h6>${course_date.title}</h6>
+            % endif
+        % endif
+        % if course_date.date and course_date.title != 'current_datetime':
+            <p class="hd hd-6 date localized-datetime" data-format="shortDate" data-datetime="${course_date.date}" data-timezone="UTC" data-language="pl" data-string="${_(course_date.relative_datestring)}"></p>
+        % endif
+        % if course_date.description:
+	   <p class="description">${course_date.description}</p>
+        % endif
+        % if course_date.link and course_date.link_text:
+            <span class="date-summary-link">
+                <a href="${course_date.link}">${course_date.link_text}</a>
+            </span>
+        % endif
+    </div>
+</li>

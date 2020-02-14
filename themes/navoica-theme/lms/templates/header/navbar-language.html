@@ -1,0 +1,33 @@
+## mako
+
+<%page expression_filter="h" args="online_help_token"/>
+
+<%namespace name='static' file='../static_content.html'/>
+<%namespace file='../main.html' import="login_query"/>
+<%!
+from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext as _
+from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
+%>
+
+<%
+show_explore_courses = settings.FEATURES.get('COURSES_ARE_BROWSABLE') and not show_program_listing
+show_sysadmin_dashboard = settings.FEATURES.get('ENABLE_SYSADMIN_DASHBOARD','') and user.is_staff
+self.real_user = getattr(user, 'real_user', user)
+%>
+
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown"
+       aria-haspopup="true" aria-expanded="false">
+        <img src="https://img.icons8.com/color/32/000000/poland-circular.png" alt="wersja polska">
+    </a>
+
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <a class="dropdown-item" href=""><img src="https://img.icons8.com/color/32/000000/poland-circular.png"
+                                              alt="wersja polska">PL</a>
+        <a class="dropdown-item" href=""><img src="https://img.icons8.com/color/32/000000/great-britain-circular.png"
+                                              alt="english (uk) version">EN (UK)</a>
+        <a class="dropdown-item" href=""><img src="https://img.icons8.com/color/32/000000/usa-circular.png"
+                                              alt="english (american) version">EN (US)</a>
+    </div>
+</li>

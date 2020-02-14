@@ -327,7 +327,7 @@ FEATURES = {
     'ENABLE_COURSE_DISCOVERY': True,
 
     # Setting for overriding default filtering facets for Course discovery
-    # 'COURSE_DISCOVERY_FILTERS': ["org", "modes", "enrollment_start"],
+    # 'COURSE_DISCOVERY_FILTERS': ["org", "modes", "enrollment_start" , 'self_paced', 'content' , 'start', 'image_url' , 'is_new' ,' language' , 'course_category', 'difficulty' , 'effort', 'availability', 'organizer'],
 
     # Software secure fake page feature flag
     'ENABLE_SOFTWARE_SECURE_FAKE': False,
@@ -1449,22 +1449,9 @@ credit_web_view_js = [
 PIPELINE_CSS = {
     'style-vendor': {
         'source_filenames': [
-            #'css/lms-main-v1.css',
             'css/vendor/font-awesome.css',
             'common/fontawesome-free/css/all.css', # font-awesome from package.json
             'css/vendor/jquery.qtip.min.css',
-            # 'css/all.css',
-            #'css/style.css',
-            #'css/courses.css',
-            #'css/course.css',
-	        #'css/course-toc.css',
-
-            'css/course-list.css',
-            'css/faq.css',
-            #'css/course-content.css',
-            #'css/polipedia.css',
-            #'css/polipedia.custom.css',
-            #'css/navoica.custom.css'
 	  ],
         'output_filename': 'css/lms-style-vendor.css',
     },
@@ -1482,7 +1469,7 @@ PIPELINE_CSS = {
     },
     'style-main-v1': {
         'source_filenames': [
-           #'css/lms-main-v1.css',
+           'css/lms-main-v1.css',
          ],
         'output_filename': 'css/lms-main-v1.css',
     },
@@ -3310,5 +3297,6 @@ ELASTIC_FIELD_MAPPINGS = {
     'organizer': {'type': 'string'},
     'difficulty': {'type': 'string'},
     'is_new': {'type': 'boolean'},
-    'availability': {'type': 'string'}
+    'availability': {'type': 'string'},
+    'self_paced': {'type': 'string'},
 }

@@ -575,11 +575,12 @@ class CourseAboutSearchIndexer(object):
         AboutInfo("organizer", AboutInfo.PROPERTY, AboutInfo.FROM_COURSE_PROPERTY),
         AboutInfo("difficulty", AboutInfo.PROPERTY, AboutInfo.FROM_COURSE_PROPERTY),
         AboutInfo("course_category", AboutInfo.PROPERTY, AboutInfo.FROM_COURSE_PROPERTY),
-        
+
         AboutInfo("is_new", AboutInfo.PROPERTY, AboutInfo.FROM_COURSE_PROPERTY),
         AboutInfo("main_page", AboutInfo.PROPERTY, AboutInfo.FROM_COURSE_PROPERTY),
-        
+
         AboutInfo("availability", AboutInfo.PROPERTY, AboutInfo.FROM_COURSE_PROPERTY),
+        AboutInfo("self_paced", AboutInfo.PROPERTY, AboutInfo.FROM_COURSE_PROPERTY),
     ]
 
     @classmethod
