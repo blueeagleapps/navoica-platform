@@ -1,9 +1,9 @@
-.wrapper-preview-menuu {
+.wrapper-preview-menu {
   @include clearfix();
 
   margin: 0 auto;
   padding: ($baseline*0.75);
-  background-color: $blue;
+  background-color: theme-color("primary");
   box-sizing: border-box;
 
   @media print {
@@ -71,7 +71,7 @@
 
     background-color: rgb(229, 234, 236);
     padding: $baseline ($baseline*2);
-    border-left: 4px solid $blue;
+    border-left: 4px solid theme-color("primary");
     margin: 0 auto;
     color: theme-color("secondary");
 

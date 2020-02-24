@@ -16,9 +16,8 @@
             terms: {},
             jqhxr: null,
 
-            initialize: function(options) {
-                this.meanings = options.meanings || {};
-                this.discovery = new CourseDiscovery({meanings: this.meanings});
+            initialize: function() {
+                this.discovery = new CourseDiscovery();
                 this.listenTo(this.discovery, 'sync', this.onSync, this);
                 this.listenTo(this.discovery, 'error', this.onError, this);
             },
@@ -100,7 +99,7 @@
                             if (facet !== 'search_query') {
                                 var option = this.discovery.facetOptions.findWhere({
                                     facet: facet,
-                                    term: term.toString()
+                                    term: term
                                 });
                                 if (option) {
                                     option.set('selected', true);

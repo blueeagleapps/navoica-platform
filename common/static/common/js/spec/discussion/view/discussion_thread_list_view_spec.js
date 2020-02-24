@@ -238,7 +238,7 @@
             expectFilter(filterval);
             this.view.$('.forum-nav-filter-main-control').val(filterval);
             expect($('.search-alert .message').text())
-                .toEqual('W tej dyskusji nie ma jeszcze żadnych wpisów.');
+                .toEqual('There are no posts in this topic yet.');
 
             filterval = 'all';
             expectFilter(filterval);
@@ -497,7 +497,7 @@
 
             it('renders and removes search alerts', function() {
                 var bar, foo;
-                testAlertMessages(['W tej dyskusji nie ma jeszcze żadnych wpisów.']);
+                testAlertMessages(['There are no posts in this topic yet.']);
                 this.view.clearSearchAlerts();
                 testAlertMessages([]);
                 foo = this.view.addSearchAlert('foo');
@@ -512,7 +512,7 @@
 
             it('renders search alert with custom class', function() {
                 var messages;
-                testAlertMessages(['W tej dyskusji nie ma jeszcze żadnych wpisów.']);
+                testAlertMessages(['There are no posts in this topic yet.']);
                 this.view.clearSearchAlerts();
                 testAlertMessages([]);
 

@@ -13,8 +13,7 @@
             events: {
                 'click li button': 'selectOption',
                 'click .show-less': 'collapse',
-                'click .show-more': 'expand',
-                'change select': 'selectListOption',
+                'click .show-more': 'expand'
             },
 
             initialize: function(options) {
@@ -22,7 +21,6 @@
                 this.$container = this.$el.find('.search-facets-lists');
                 this.facetTpl = HtmlUtils.template($('#facet-tpl').html());
                 this.facetOptionTpl = HtmlUtils.template($('#facet_option-tpl').html());
-                this.facetSelectTpl = HtmlUtils.template($('#facet_select-tpl').html());
             },
 
             facetName: function(key) {
@@ -42,31 +40,13 @@
                     return this.facetOptionTpl(data);
                 }, this));
             },
-            
-            renderSelect: function(options) {
-				var i = 0;
-                return HtmlUtils.joinHtml.apply(this, _.map(options, function(option) {
-                    var data = _.clone(option.attributes);
-                    data.name = this.termName(data.facet, data.term);
-                    data.number = i;
-                    i++;
-                    return this.facetSelectTpl(data);
-                }, this));
-            },
 
             renderFacet: function(facetKey, options) {
-				var rederwhat = '';
-				if (options.length > 5) {
-					rederwhat = this.renderSelect(options);
-				}
-				else {
-					rederwhat = this.renderOptions(options);
-				}
                 return this.facetTpl({
                     name: facetKey,
                     displayName: this.facetName(facetKey),
-                    optionsHtml: rederwhat,
-                    listIsHuge: (options.length > 5)
+                    optionsHtml: this.renderOptions(options),
+                    listIsHuge: (options.length > 9)
                 });
             },
 
@@ -106,17 +86,6 @@
                 var $target = $(event.currentTarget);
                 this.trigger(
                 'selectOption',
-                $target.data('facet'),
-                $target.data('value'),
-                $target.data('text')
-            );
-            },
-            
-            selectListOption: function(event) {
-                var $target = $(event.currentTarget);
-                $target = $target.find('option:selected');
-                this.trigger(
-                'selectListOption',
                 $target.data('facet'),
                 $target.data('value'),
                 $target.data('text')

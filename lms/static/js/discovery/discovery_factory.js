@@ -7,7 +7,7 @@
         function(Backbone, SearchState, Filters, SearchForm, CoursesListing, FilterBar, RefineSidebar) {
             return function(meanings, searchQuery, userLanguage, userTimezone) {
                 var dispatcher = _.extend({}, Backbone.Events);
-                var search = new SearchState({ meanings: meanings});
+                var search = new SearchState();
                 var filters = new Filters();
                 var form = new SearchForm();
                 var filterBar = new FilterBar({collection: filters});
@@ -21,7 +21,7 @@
                     userLanguage: userLanguage,
                     userTimezone: userTimezone
                 };
-                listing = new CoursesListing({model: courseListingModel, meanings: meanings});
+                listing = new CoursesListing({model: courseListingModel});
 
                 dispatcher.listenTo(form, 'search', function(query) {
                     filters.reset();
@@ -37,14 +37,6 @@
                         filters.add({type: type, query: query, name: name});
                         search.refineSearch(filters.getTerms());
                     }
-                });
-
-                dispatcher.listenTo(refineSidebar, 'selectListOption', function(type, query, name) {
-                    form.showLoadingIndicator();
-                    removeFilter(type);
-					filters.add({type: type, query: query, name: name});
-					search.refineSearch(filters.getTerms());
-
                 });
 
                 dispatcher.listenTo(filterBar, 'clearFilter', removeFilter);

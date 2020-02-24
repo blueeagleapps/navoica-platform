@@ -225,7 +225,7 @@
                 }
                 if (this.$('.forum-nav-thread-list li').length === 0) {
                     this.clearSearchAlerts();
-                    this.addSearchAlert(gettext('W tej dyskusji nie ma jeszcze żadnych wpisów.'));
+                    this.addSearchAlert(gettext('There are no posts in this topic yet.'));
                 }
                 this.showMetadataAccordingToSort();
                 this.renderMorePages();

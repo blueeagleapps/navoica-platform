@@ -16,8 +16,7 @@
                 start: '',
                 image_url: '',
                 org: '',
-                id: '',
-                is_new: '',
+                id: ''
             }
         });
     });

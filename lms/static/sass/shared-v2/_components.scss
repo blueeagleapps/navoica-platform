@@ -41,8 +41,8 @@
 
       &:hover,
       &:focus {
-        color: $blue;
-        border-bottom-color: $blue;
+        color: theme-color("primary");
+        border-bottom-color: theme-color("primary");
       }
 
       &.active {
@@ -143,13 +143,13 @@
   }
 }
 
-.wrapper-preview-menuu {
+.wrapper-preview-menu {
   @include clearfix();
   @include box-sizing(border-box);
 
   margin: 0 auto;
   padding: ($baseline*0.75) ($baseline*2);
-  background-color: $blue;
+  background-color: theme-color("primary");
 
   @media print {
     display: none;

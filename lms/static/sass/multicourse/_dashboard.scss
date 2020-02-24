@@ -943,16 +943,19 @@
 
       &.course-status-certavailable {
         .message-copy {
-          width: 100%;
+          width: flex-grid(6, 12);
           position: relative;
 
           @include float(left);
         }
 
         .actions-primary {
+          @include float(right);
 
           .action {
-            margin:0;
+                    @include margin(0, 0, ($baseline/2), ($baseline*0.75));
+
+            float: none;
             text-align: center;
 
             &:last-child {
@@ -968,12 +971,11 @@
             @extend %btn-inherited-primary;
             @include box-sizing(border-box);
 
+            padding: 7px $baseline*0.75;
             float: none;
             border-radius: 3px;
             display: block;
             text-align: center;
-            margin-top: 10px;
-            width: 100%;
 
             a:link,
             a:visited {

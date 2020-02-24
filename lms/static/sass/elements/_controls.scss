@@ -59,6 +59,8 @@
 %btn-inherited-primary {
   @extend %btn-inherited;
 
+  @include linear-gradient(top, rgba($white, 0.3), rgba($white, 0));
+
   border: 1px solid shade($action-primary-bg, 10%);
   background-color: $action-primary-bg;
   color: $action-primary-fg;
@@ -508,8 +510,8 @@
 
   &:focus,
   &:hover {
-    background-image: none;
-    background-color: transparent;
+    background-image: none !important;
+    background-color: transparent !important;
     color: $link-color;
   }
 }

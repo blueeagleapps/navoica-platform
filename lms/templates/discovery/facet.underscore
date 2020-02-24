@@ -1,18 +1,9 @@
-<div class="list-group list-gruop-flush" data-facet="<%- name %>">
-	<div class="list-group-item">
-		<div class="header-facet">
- 	   		<%- gettext(displayName) %>
-		</div>
-	</div>
-<% if (listIsHuge) { %>
-	<select data-facet="<%- name %>" class="facet-list collapse select_list">
-		<%= HtmlUtils.ensureHtml(optionsHtml) %>
-	</select>
-<% } else { %>
-	<div data-facet= class="facet-list">
-		<%= HtmlUtils.ensureHtml(optionsHtml) %>
-	</div>
-<% } %>
+<h3 class="header-facet">
+    <%- displayName %>
+</h3>
+<ul data-facet="<%- name %>" class="facet-list collapse">
+    <%= HtmlUtils.ensureHtml(optionsHtml) %>
+</ul>
 <% if (listIsHuge) { %>
     <div class="toggle ">
         <button class="show-more discovery-button">
@@ -23,4 +14,3 @@
         </button>
     </div>
 <% } %>
-</div>

@@ -18,129 +18,114 @@ import calendar
 <%block name="bodyclass">view-register</%block>
 
 <%block name="js_extra">
-<script type="text/javascript">
-    $(function () {
+  <script type="text/javascript">
+    $(function() {
 
-        // adding js class for styling with accessibility in mind
-        $('body').addClass('js');
+      // adding js class for styling with accessibility in mind
+      $('body').addClass('js');
 
-        // new window/tab opening
-        $('a[rel="external"], a[class="new-vp"]')
-            .click(function () {
-                window.open($(this).attr('href'));
-                return false;
-            });
+      // new window/tab opening
+      $('a[rel="external"], a[class="new-vp"]')
+      .click( function() {
+      window.open( $(this).attr('href') );
+      return false;
+      });
 
-        // form field label styling on focus
-        $("form :input").focus(function () {
-            $("label[for='" + this.id + "']").parent().addClass("is-focused");
-        }).blur(function () {
-            $("label").parent().removeClass("is-focused");
-        });
-        
-        $("#confirm_password").on("focusout", function() {
-			if ($("#password").val()!=$("#confirm_password").val()) {
-				$("#confirm_password").get(0).setCustomValidity("${_('Passwords Don\'t Match')}");
-				$("#confirm_password").get(0).reportValidity();
-				$("#confirm_password").blur();
-			}
-		});
+      // form field label styling on focus
+      $("form :input").focus(function() {
+        $("label[for='" + this.id + "']").parent().addClass("is-focused");
+      }).blur(function() {
+        $("label").parent().removeClass("is-focused");
+      });
 
     });
 
-    (function () {
+    (function() {
+      toggleSubmitButton(true);
+
+      $('#register-form').on('submit', function() {
+        toggleSubmitButton(false);
+      });
+
+      $('#register-form').on('ajax:error', function() {
         toggleSubmitButton(true);
+      });
 
-        $('#register-form').on('submit', function () {
-            toggleSubmitButton(false);
-        });
+      $('#register-form').on('ajax:success', function(event, json, xhr) {
+        var nextUrl = "${login_redirect_url}";
+        if (json.redirect_url) {
+          nextUrl = json.redirect_url; // Most likely third party auth completion. This trumps 'nextUrl' above.
+        }
+        if (!isExternal(nextUrl)) {
+          location.href=nextUrl;
+        } else {
+          location.href="${reverse('dashboard')}";
+        }
+      });
 
-        $('#register-form').on('ajax:error', function () {
-            toggleSubmitButton(true);
-        });
-
-        $('#register-form').on('ajax:success', function (event, json, xhr) {
-            var nextUrl = "${login_redirect_url}";
-            if (json.redirect_url) {
-                nextUrl = json.redirect_url; // Most likely third party auth completion. This trumps 'nextUrl' above.
-            }
-            if (!isExternal(nextUrl)) {
-                location.href = nextUrl;
-            } else {
-                location.href = "${reverse('dashboard')}";
-            }
-        });
-
-        $('#register-form').on('ajax:error', function (event, jqXHR, textStatus) {
-            toggleSubmitButton(true);
-            json = $.parseJSON(jqXHR.responseText);
-            $('.status.message.submission-error').addClass('is-shown').focus();
-            $('.status.message.submission-error .message-copy').html(json.value).stop().css("display", "block");
-            $(".field-error").removeClass('field-error');
-            $("[data-field='" + json.field + "']").addClass('field-error')
-        });
+      $('#register-form').on('ajax:error', function(event, jqXHR, textStatus) {
+        toggleSubmitButton(true);
+        json = $.parseJSON(jqXHR.responseText);
+        $('.status.message.submission-error').addClass('is-shown').focus();
+        $('.status.message.submission-error .message-copy').html(json.value).stop().css("display", "block");
+        $(".field-error").removeClass('field-error');
+        $("[data-field='"+json.field+"']").addClass('field-error')
+      });
     })(this);
 
     function thirdPartySignin(event, url) {
-        event.preventDefault();
-        window.location.href = url;
+      event.preventDefault();
+      window.location.href = url;
     }
 
     function toggleSubmitButton(enable) {
-        var $submitButton = $('form .form-actions #submit');
+      var $submitButton = $('form .form-actions #submit');
 
-        if (enable) {
-            $submitButton.removeClass('is-disabled').attr('aria-disabled', false).removeProp('disabled').removeAttr('disabled').html("<i class='fas fa-check'></i> ${_('Register')}");
-        }
-        else {
-            $submitButton.addClass('is-disabled').prop('disabled', true).text("${_('Processing your account information')}");
-        }
+      if(enable) {
+        $submitButton.
+          removeClass('is-disabled').
+          attr('aria-disabled', false).
+          removeProp('disabled').
+          html("${_('Create My {platform_name} Account').format(platform_name=platform_name)}");
+      }
+      else {
+        $submitButton.
+          addClass('is-disabled').
+          prop('disabled', true).
+          text("${_('Processing your account information')}");
+      }
     }
-</script>
+  </script>
 </%block>
 
+<section class="introduction">
+  <header>
+    <h1 class="title">
+      <span class="title-super">${_("Welcome!")}</span>
+      <span class="title-sub">${_("Register below to create your {platform_name} account").format(platform_name=platform_name)}</span>
+    </h1>
+  </header>
+</section>
 
-<div id="content" class="border-top">
-  <section class="register container login">
-    <div class="tab-content" id="nav-tabContent">
-    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-    <div class="d-flex">
-       <article id="result">
-           <header id="header-login">
-             <h2 id="h2">
-              <span class="d-none d-md-block">Formularz rejestracji</span>
-            </h2>
-          </header>
-            <h1><strong>${_("Welcome!")}</strong><br> ${_("Register below to create your {platform_name} account").format(platform_name=platform_name)}</h1>
-
-            <section role="main">
-                <form role="form" id="register-form" method="post" data-remote="true" action="/create_account" novalidate>
-                    <%
-                    # allow for theming override on the registration form
-                    registration_form = static.get_template_path('register-form.html')
-                    %>
-                    <%include file="${registration_form}" />
-                </form>
-             </section>
-           
-        </article>
-
-        <aside id="filter" class="sidebar">
-          <header id="header-login">
-            <h2 id="h2">
-              <span class="d-none d-md-block">Przydatne informacje</span>
-            </h2>
-          </header>
-            <%
-            # allow for theming overrides on the registration sidebars, otherwise default to pre-existing ones
-            sidebar_file = static.get_template_path('register-sidebar.html')
-            %>
-
-            <%include file="${sidebar_file}" />
-        </aside>
-
-      </div>
-   </div>
-   </div>
+<section class="register container">
+  <section role="main" class="content">
+    <form role="form" id="register-form" method="post" data-remote="true" action="/create_account" novalidate>
+<%
+  # allow for theming override on the registration form
+  registration_form = static.get_template_path('register-form.html')
+%>
+      <%include file="${registration_form}" />
+    </form>
   </section>
- </div>
+
+  <aside role="complementary">
+
+<%
+  # allow for theming overrides on the registration sidebars, otherwise default to pre-existing ones
+  sidebar_file = static.get_template_path('register-sidebar.html')
+%>
+
+    <%include file="${sidebar_file}" />
+
+  </aside>
+</section>

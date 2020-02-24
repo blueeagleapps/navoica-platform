@@ -33,28 +33,15 @@ if course is not None:
     <%
     tab_list = get_course_tab_list(request, course)
     %>
-
-  
-
-<div class="jumbotronn">
-<div class="container">
-<nav>
-     <select id="action-tab-select" class="custom-select" name="tab" onchange="location = this.value">
-        <option hidden value="default">Wbierz zakładkę</option>
-        % for tab in tab_list:
-           <%
-              tab_is_active = tab.tab_id in (active_page, default_tab)
-           %>                                            
-        <option value="${tab.link_func(course, reverse)}" >${_(tab.name)}</option>
-        %endfor
-    </select>
-        
-   <div class="nav nav-tabs" id="nav-tab" role="tablist">
-              % for tab in tab_list:
+    % if uses_bootstrap:
+        <nav class="navbar course-tabs pb-0 navbar-expand" aria-label="${_('Course')}">
+            <ul class="navbar-nav mr-auto">
+                % for tab in tab_list:
                     <%
                     tab_is_active = tab.tab_id in (active_page, default_tab)
                     %>
-                    <a href="${tab.link_func(course, reverse)}" class="nav-link ${'active' if tab_is_active else ''}">
+                    <li class="nav-item ${'active' if tab_is_active else ''}">
+                        <a href="${tab.link_func(course, reverse)}" class="nav-link">
                             ${_(tab.name)}
                             % if tab_is_active:
                                 <span class="sr-only">, ${_('current location')}</span>
@@ -64,11 +51,22 @@ if course is not None:
                                 ## notification image that indicates the tab "needs attention".
                                 <img src="${tab_image}" alt="${_('needs attention')}" />
                             %endif
-                     </a>
+                        </a>
+                    </li>
                 % endfor
-    </div>
-</nav>
-
-</div>
-</div>
+            </ul>
+        </nav>
+    % else:
+        <nav class="${active_page} wrapper-course-material" aria-label="${_('Course Material')}">
+            <div class="course-material">
+                <%
+                tabs_tmpl = static.get_template_path('/courseware/tabs.html')
+                %>
+                <ol class="tabs course-tabs">
+                    <%include file="${tabs_tmpl}" args="tab_list=tab_list,active_page=active_page,default_tab=default_tab,tab_image=tab_image" />
+                    <%block name="extratabs" />
+                </ol>
+            </div>
+        </nav>
+    % endif
 %endif

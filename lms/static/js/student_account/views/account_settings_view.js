@@ -23,7 +23,7 @@
                     selected: true,
                     expanded: true
                 },
-                /*{
+                {
                     name: 'accountsTabSections',
                     id: 'accounts-tab',
                     label: gettext('Linked Accounts'),
@@ -38,7 +38,7 @@
                     tabindex: -1,
                     selected: false,
                     expanded: false
-                }*/
+                }
             ],
             events: {
                 'click .account-nav-link': 'switchTab',

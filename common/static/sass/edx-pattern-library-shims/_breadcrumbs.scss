@@ -35,7 +35,7 @@
 
     a,
     a:visited {
-      color: $blue;
+      color: theme-color("primary");
     }
 
     a:hover {

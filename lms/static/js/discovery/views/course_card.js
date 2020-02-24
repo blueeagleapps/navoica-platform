@@ -21,9 +21,9 @@
 
         return Backbone.View.extend({
 
-            tagName: 'div',
+            tagName: 'li',
             templateId: '#course_card-tpl',
-            className: 'col-lg-4 mb-2',
+            className: 'courses-listing-item',
 
             initialize: function() {
                 this.tpl = _.template($(this.templateId).html());
@@ -31,14 +31,12 @@
 
             render: function() {
                 var data = _.clone(this.model.attributes);
-
-                data['org_text'] = data['org'];
-                if (data['organizer']!==undefined){
-                    data['org_text'] = organizer_list[+data['organizer']];
+                var userLanguage = '',
+                    userTimezone = '';
+                if (this.model.userPreferences !== undefined) {
+                    userLanguage = this.model.userPreferences.userLanguage;
+                    userTimezone = this.model.userPreferences.userTimezone;
                 }
-
-                var userLanguage = 'pl',
-                    userTimezone = 'Europe/Warsaw';
                 if (data.advertised_start !== undefined) {
                     data.start = data.advertised_start;
                 } else {

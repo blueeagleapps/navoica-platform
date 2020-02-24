@@ -33,8 +33,8 @@
       &.active,
       &:hover {
         .nav-link {
-          border-bottom-color: $blue;
-          color: $blue;
+          border-bottom-color: theme-color("primary");
+          color: theme-color("primary");
         }
       }
     }

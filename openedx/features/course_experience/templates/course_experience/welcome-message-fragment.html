@@ -11,20 +11,15 @@ from openedx.core.djangolib.markup import HTML
 
 <%block name="content">
 <div class="welcome-message">
-   <div class="d-flex justify-content-between">
-        <h2 id="h2">${_('Welcome Message')}</h2>
-        <div class="dismiss-message">
-            <button class="btn btn-sm btn-outline-primary red">
-                <span class="dissmis-action" data-action-type="resume"></span>
-            </button>
-         </div>
+    <div class="dismiss-message">
+        <button type="button" class="btn-link">
+            <span class="sr">${_("Dismiss")}</span>
+            <span class="icon fa fa-times" aria-hidden="true"></span>
+        </button>
     </div>
-    <div id="welcome-message-content">
-        ${HTML(welcome_message_html)}
-    </div>
-    <hr>
-</div>
 
+    ${HTML(welcome_message_html)}
+</div>
 </%block>
 
 <%static:webpack entry="WelcomeMessage">

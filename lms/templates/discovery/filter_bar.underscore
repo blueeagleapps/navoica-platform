@@ -1,9 +1,4 @@
-<div">
-    <header>
-    <h2>
-        <span class="d-none d-md-block"><%- interpolate(gettext("Filters"))%></span>
-        <a href="#search-facets-lists" data-toggle="collapse" class="dropdown-toggle d-md-none"><%- interpolate(gettext("Show filters"))%></a>
-    </h2>
-    <a class="font-weight-normal" id="clear-all-filters" href="#" class="clear-filters"><%- interpolate(gettext("Clean filters"))%></a>
-    </header>
+<div class="filters-inner">
+    <ul class="active-filters facet-list"></ul>
+    <button id="clear-all-filters" class="clear-filters flt-right discovery-button"><%- gettext('Clear All') %></button>
 </div>

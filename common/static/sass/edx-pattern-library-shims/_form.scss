@@ -17,7 +17,7 @@
   }
 
   .field-input:checked + .field-input-label {
-    color: $blue;
+    color: theme-color("primary");
   }
 
 }

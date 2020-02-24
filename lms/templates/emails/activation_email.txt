@@ -4,9 +4,9 @@ ${_("You're almost there! Use the link to activate your account to access engagi
 "you have activated it.").format(platform_name=platform_name)}
 
 % if is_secure:
-  https://${settings.LMS_BASE}/activate/${ key }
+https://${ site }/activate/${ key }
 % else:
-  http://${settings.LMS_BASE}/activate/${ key }
+http://${ site }/activate/${ key }
 % endif
 
 ${_("Enjoy learning with {platform_name}.").format(platform_name=platform_name)}

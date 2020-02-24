@@ -3,8 +3,7 @@
         'underscore',
         'backbone',
         'js/discovery/models/course_card',
-        'js/discovery/models/facet_option',
-        'js/discovery/models/facet_select'
+        'js/discovery/models/facet_option'
     ], function(_, Backbone, CourseCard, FacetOption) {
         'use strict';
 
@@ -17,30 +16,11 @@
                 latestCount: 0
             },
 
-            initialize: function(options) {
-                var meanings = options.meanings || {};
-                var termName = function(facetKey, termKey) {
-                return meanings[facetKey] &&
-                meanings[facetKey].terms &&
-                meanings[facetKey].terms[termKey] || termKey;
-                };
+            initialize: function() {
                 this.courseCards = new Backbone.Collection([], {model: CourseCard});
-                this.facetOptions = new Backbone.Collection([], {model: FacetOption, comparator: function(modelA,modelB){
-                    var modelA = _.clone(modelA.attributes);
-                    var modelB = _.clone(modelB.attributes);
-                    modelA.name = termName(modelA.facet, modelA.term);
-                    modelB.name = termName(modelB.facet, modelB.term);
-                    if(modelA.facet === modelB.facet){
-                        return modelA.name.localeCompare(modelB.name);
-                    }
-                    return modelA.facet.localeCompare(modelB.facet);
-                    } });
+                this.facetOptions = new Backbone.Collection([], {model: FacetOption});
             },
-            termName: function(facetKey, termKey) {
-                return this.meanings[facetKey] &&
-                this.meanings[facetKey].terms &&
-                this.meanings[facetKey].terms[termKey] || termKey;
-            },
+
             parse: function(response) {
                 var courses = response.results || [];
                 var facets = response.facets || {};

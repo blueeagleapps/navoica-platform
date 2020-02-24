@@ -22,17 +22,17 @@
             contactEmail,
             allowEmailChange,
             socialPlatforms,
+
             syncLearnerProfileData,
             enterpriseName,
             enterpriseReadonlyAccountFields,
             edxSupportUrl,
-            extendedProfileFields,
-            enableGDPRFlag
+            extendedProfileFields
         ) {
             var $accountSettingsElement, userAccountModel, userPreferencesModel, aboutSectionsData,
                 accountsSectionData, ordersSectionData, accountSettingsView, showAccountSettingsPage,
                 showLoadingError, orderNumber, getUserField, userFields, timeZoneDropdownField, countryDropdownField,
-                emailFieldView, socialFields, accountDeletionFields, platformData,
+                emailFieldView, socialFields, platformData,
                 aboutSectionMessageType, aboutSectionMessage, fullnameFieldView, countryFieldView,
                 fullNameFieldData, emailFieldData, countryFieldData, additionalFields, fieldItem;
 
@@ -124,10 +124,8 @@
             aboutSectionsData = [
                 {
                     title: gettext('Basic Account Information'),
-                    subtitle: StringUtils.interpolate(
-                                    gettext('These settings include basic information about your account. {platform_name}'),  // eslint-disable-line max-len
-                                    {platform_name: platformName}
-                                ),
+                    subtitle: gettext('These settings include basic information about your account.'),
+
                     messageType: aboutSectionMessageType,
                     message: aboutSectionMessage,
 
@@ -155,10 +153,10 @@
                                 passwordResetSupportUrl: passwordResetSupportUrl,
                                 linkTitle: gettext('Reset Your Password'),
                                 linkHref: fieldsData.password.url,
-                                //helpMessage: gettext('Check your email account for instructions to reset your password.')  // eslint-disable-line max-len
+                                helpMessage: gettext('Check your email account for instructions to reset your password.')  // eslint-disable-line max-len
                             })
                         },
-                        /*{
+                        {
                             view: new AccountSettingsFieldViews.LanguagePreferenceFieldView({
                                 model: userPreferencesModel,
                                 title: gettext('Language'),
@@ -172,8 +170,8 @@
                                 options: fieldsData.language.options,
                                 persistChanges: true
                             })
-                        },*/
-                        countryFieldView/*,
+                        },
+                        countryFieldView,
                         {
                             view: new AccountSettingsFieldViews.TimeZoneFieldView({
                                 model: userPreferencesModel,
@@ -188,7 +186,7 @@
                                 }],
                                 persistChanges: true
                             })
-                        }*/
+                        }
                     ]
                 },
                 {
@@ -220,7 +218,7 @@
                                 options: fieldsData.year_of_birth.options,
                                 persistChanges: true
                             })
-                        }/*,
+                        },
                         {
                             view: new AccountSettingsFieldViews.LanguageProficienciesFieldView({
                                 model: userAccountModel,
@@ -229,7 +227,7 @@
                                 options: fieldsData.preferred_language.options,
                                 persistChanges: true
                             })
-                        }*/
+                        }
                     ]
                 }
             ];
@@ -266,7 +264,7 @@
 
 
             // Add the social link fields
-           /* socialFields = {
+            socialFields = {
                 title: gettext('Social Media Links'),
                 subtitle: gettext('Optionally, link your personal accounts to the social media icons on your edX profile.'),  // eslint-disable-line max-len
                 fields: []
@@ -292,18 +290,6 @@
                 );
             }
             aboutSectionsData.push(socialFields);
-*/
-            // Add account deletion fields
-            if (enableGDPRFlag) {
-                accountDeletionFields = {
-                    title: gettext('Delete My Account'),
-                    fields: [],
-                    // Used so content can be rendered external to Backbone
-                    domHookId: 'account-deletion-container'
-                };
-                aboutSectionsData.push(accountDeletionFields);
-            }
-
 
             // set TimeZoneField to listen to CountryField
             getUserField = function(list, search) {
@@ -314,9 +300,9 @@
             userFields = _.find(aboutSectionsData, function(section) {
                 return section.title === gettext('Basic Account Information');
             }).fields;
-            //timeZoneDropdownField = getUserField(userFields, 'time_zone');
+            timeZoneDropdownField = getUserField(userFields, 'time_zone');
             countryDropdownField = getUserField(userFields, 'country');
-            //timeZoneDropdownField.listenToCountryView(countryDropdownField);
+            timeZoneDropdownField.listenToCountryView(countryDropdownField);
 
             accountsSectionData = [
                 {

@@ -1501,9 +1501,9 @@ PIPELINE_CSS = {
     },
     'style-course': {
         'source_filenames': [
-            'css/course-content.css',
+            'css/lms-course.css',
         ],
-        'output_filename': 'css/course-content.css',
+        'output_filename': 'css/lms-course.css',
     },
     'style-course-rtl': {
         'source_filenames': [

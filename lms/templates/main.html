@@ -7,7 +7,7 @@
 
 ## Pages currently use v1 styling by default. Once the Pattern Library
 ## rollout has been completed, this default can be switched to v2.
-<%! main_css = "css/bootstrap/lms-main.css" %>
+<%! main_css = "style-main-v1" %>
 
 
 <%namespace name='static' file='static_content.html'/>
@@ -26,11 +26,10 @@ from pipeline_mako import render_require_js_path_overrides
 <!DOCTYPE html>
 <!--[if lte IE 9]><html class="ie ie9 lte9" lang="${LANGUAGE_CODE}"><![endif]-->
 <!--[if !IE]><!--><html lang="${LANGUAGE_CODE}"><!--<![endif]-->
-<!--<head dir="${static.dir_rtl()}">-->
-<head>
+<head dir="${static.dir_rtl()}">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
 ## Define a couple of helper functions to make life easier when
 ## embedding theme conditionals into templates. All inheriting
@@ -41,11 +40,8 @@ from pipeline_mako import render_require_js_path_overrides
 <%def name="pagetitle()" />
   <%block name="title">
       <title>
-       ${_('Navoica.pl - Polish MOOC platform')}
+       ${static.get_page_title_breadcrumbs(self.pagetitle())}
       </title>
-  </%block>
-  <%block name="metadescription">
-      <meta name="description" content="${_('Polish MOOC platform offering free of charge online courses for every registered user. ')}" />
   </%block>
 
   % if not allow_iframing:
@@ -58,14 +54,6 @@ from pipeline_mako import render_require_js_path_overrides
         })(this);
       </script>
   % endif
-
-<script>
-    var organizer_list = {
-    % for organizer in settings.ALL_COURSE_ORGANIZER:
-     "${organizer[0]}": "${organizer[1]}",
-    % endfor
-    }
-</script>
 
   <%
     jsi18n_path = "js/i18n/{language}/djangojs.js".format(language=LANGUAGE_CODE)
@@ -101,9 +89,8 @@ from pipeline_mako import render_require_js_path_overrides
 
   <%static:webpack entry="commons"/>
 
-  % if not uses_bootstrap:
+  % if uses_bootstrap:
     ## xss-lint: disable=mako-invalid-js-filter
-    <!--rozwala menu-->
     <script type="text/javascript" src="${static.url('common/js/vendor/bootstrap.bundle.js')}"></script>
   % endif
 
@@ -116,8 +103,6 @@ from pipeline_mako import render_require_js_path_overrides
     }).call(this, require || RequireJS.require);
   </script>
   <script type="text/javascript" src="${static.url("lms/js/require-config.js")}"></script>
-  <script src="${static.url("js/popper.min.js")}"></script>
-  <script src="${static.url("js/bootstrap.min.js")}"></script>
   <%block name="js_overrides">
     ${render_require_js_path_overrides(settings.REQUIRE_JS_PATH_OVERRIDES) | n, decode.utf8}
   </%block>
@@ -140,25 +125,20 @@ from pipeline_mako import render_require_js_path_overrides
   <meta name="google-site-verification" content="_mipQ4AtZQDNmbtOkwehQDOgCxUUV2fb_C0b6wbiRHY" />
   <meta name="openedx-release-line" content="${RELEASE_LINE}" />
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-128186145-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+<% ga_acct = static.get_value("GOOGLE_ANALYTICS_ACCOUNT", settings.GOOGLE_ANALYTICS_ACCOUNT) %>
+% if ga_acct:
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '${ga_acct | n, js_escaped_string}']);
+    _gaq.push(['_trackPageview']);
 
-  gtag('config', 'UA-128186145-1');
-</script>
-
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-76190095-8"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-76190095-8');
-</script>
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+% endif
 
 <% branch_key = static.get_value("BRANCH_IO_KEY", settings.BRANCH_IO_KEY) %>
 % if branch_key and not is_from_mobile_app:
@@ -167,17 +147,16 @@ from pipeline_mako import render_require_js_path_overrides
         branch.init('${branch_key | n, js_escaped_string}');
     </script>
 % endif
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&amp;subset=latin-ext">
 
 </head>
 
-<body class='<%block name="bodyclass"/> lang_${LANGUAGE_CODE}'>
+<body class="${static.dir_rtl()} <%block name='bodyclass'/> lang_${LANGUAGE_CODE}">
 
 <%static:optional_include_mako file="body-initial.html" is_theming_enabled="True" />
 <div id="page-prompt"></div>
-<!--% if not disable_window_wrap:-->
-<!--  <div class="window-wrap" dir="${static.dir_rtl()}">-->
-<!--% endif-->
+% if not disable_window_wrap:
+  <div class="window-wrap" dir="${static.dir_rtl()}">
+% endif
     <a class="nav-skip sr-only sr-only-focusable" href="#main">${_("Skip to main content")}</a>
 
     % if not disable_header:
@@ -186,27 +165,21 @@ from pipeline_mako import render_require_js_path_overrides
     % endif
 
     <%include file="/page_banner.html" />
-
+    
     <div class="marketing-hero"><%block name="marketing_hero"></%block></div>
-% if request.path == '/':
-  ${self.body()}
-% else:
 
-    ${self.body()}
-    <%block name="bodyextra"/>
-
-% endif
-
-
-
+    <div class="content-wrapper main-container" id="content">
+      ${self.body()}
+      <%block name="bodyextra"/>
+    </div>
 
     % if not disable_footer:
         <%include file="${static.get_template_path('footer.html')}" />
     % endif
 
-<!--% if not disable_window_wrap:-->
-<!--  </div>-->
-<!--% endif-->
+% if not disable_window_wrap:
+  </div>
+% endif
 
   <%block name="footer_extra"/>
   <%block name="js_extra"/>
@@ -216,7 +189,6 @@ from pipeline_mako import render_require_js_path_overrides
   <script type="text/javascript" src="${static.url('js/utils/navigation.js')}" charset="utf-8"></script>
   <script type="text/javascript" src="${static.url('js/header/header.js')}"></script>
   <%static:optional_include_mako file="body-extra.html" is_theming_enabled="True" />
-
 </body>
 </html>
 

@@ -47,12 +47,6 @@ from student.models import CourseEnrollment
         signInUser: "${reverse('signin_user') | n, js_escaped_string}",
         changeEmailSettings: "${reverse('change_email_settings') | n, js_escaped_string}"
       });
-
-      let MaxSignsNumber = 150;
-      $('.card-text').each(function(index, el) {
-          if ($(el).text().length > MaxSignsNumber) {
-            $(el).text($(el).text().substring(0, MaxSignsNumber) + "...")}
-              });
     });
   </script>
   <%static:webpack entry="UnenrollmentFactory">
@@ -92,17 +86,6 @@ from student.models import CourseEnrollment
   % endif
 </%block>
 
-<header class="bg-light">
-    <div class="jumbotron">
-       <%include file="learner_dashboard/_dashboard_navigation_courses.html"/>
-    </div>
-</header>
-
-
-
-<div id="content" class="bg-light border-top" style="padding-top: 3rem; margin-bottom: 0;">
-    <main class="container">
-
 <div class="dashboard-notifications" tabindex="-1">
 
     %if banner_account_activation_message:
@@ -137,14 +120,15 @@ from student.models import CourseEnrollment
 
 </div>
 
-      <section id="results">
-        <header id="header-login">
-          <h2 id="h2">Lista kursów</h2>
-        </header>
+<main id="main" aria-label="Content" tabindex="-1">
+    <div class="dashboard" id="dashboard-main">
 
+      <div class="main-container">
+        <div class="my-courses" id="my-courses">
+          <%include file="learner_dashboard/_dashboard_navigation_courses.html"/>
 
           % if len(course_entitlements + course_enrollments) > 0:
-            <div class="row">
+            <ul class="listing-courses">
             <%
                 share_settings = configuration_helpers.get_value(
                     'SOCIAL_SHARING_SETTINGS',
@@ -208,7 +192,7 @@ from student.models import CourseEnrollment
               <%include file='dashboard/_dashboard_course_listing.html' args='course_overview=course_overview, course_card_index=dashboard_index, enrollment=enrollment, is_unfulfilled_entitlement=is_unfulfilled_entitlement, is_fulfilled_entitlement=is_fulfilled_entitlement, entitlement=entitlement, entitlement_session=entitlement_session, entitlement_available_sessions=entitlement_available_sessions, entitlement_expiration_date=entitlement_expiration_date, entitlement_expired_at=entitlement_expired_at, show_courseware_link=show_courseware_link, cert_status=cert_status, can_refund_entitlement=can_refund_entitlement, can_unenroll=can_unenroll, credit_status=credit_status, show_email_settings=show_email_settings, course_mode_info=course_mode_info, is_paid_course=is_paid_course, is_course_blocked=is_course_blocked, verification_status=course_verification_status, course_requirements=course_requirements, dashboard_index=dashboard_index, share_settings=share_settings, user=user, related_programs=related_programs, display_course_modes_on_dashboard=display_course_modes_on_dashboard, show_consent_link=show_consent_link, enterprise_customer_name=enterprise_customer_name, resume_button_url=resume_button_url' />
             % endfor
 
-            </div>
+            </ul>
           % else:
             <div class="empty-dashboard-message">
               <p>${_("You are not enrolled in any courses yet.")}</p>
@@ -240,7 +224,7 @@ from student.models import CourseEnrollment
           % endif
         </div>
       </div>
-      <div style="display: none" class="side-container">
+      <div class="side-container">
         %if sidebar_account_activation_message:
           <div class="sidebar-notification">
             ${sidebar_account_activation_message | n, decode.utf8}
@@ -288,10 +272,9 @@ from student.models import CourseEnrollment
             </div>
           </div>
         % endif
-
-      </section>
-    </main>
-</div>
+      </div>
+    </div>
+</main>
 
 <div id="email-settings-modal" class="modal" aria-hidden="true">
   <div class="inner-wrapper" role="dialog" aria-labelledby="email-settings-title">
@@ -326,41 +309,34 @@ from student.models import CourseEnrollment
 
 <div id="unenroll-modal" class="modal unenroll-modal" aria-hidden="true">
   <div class="inner-wrapper" role="dialog" aria-labelledby="unenrollment-modal-title">
-    <div class="modal-header">
-      <h5 class="modal-title" id="exampleModalLabel">Wypisz się z kursu</h5>
-        <button class="close-modal">
-          <span aria-hidden="true">×</span>
-          <span class="sr">
+    <button class="close-modal">
+      <span class="icon fa fa-remove" aria-hidden="true"></span>
+      <span class="sr">
         ## Translators: this is a control to allow users to exit out of this modal interface (a menu or piece of UI that takes the full focus of the screen)
         ${_("Close")}
-          </span>
-       </button>
-     </div>
+      </span>
+    </button>
 
-           <div class="modal-body">
-                <form id="info_body">
-                    <div class="instructions">
-                        <div id="track-info">
-                            Czy na pewno chcesz się wypisać z kursu
-                            <h3 id="unenroll_course_name"></h3>
-                            <p>
-                                (kod kursu: <span id="unenroll_course_number"></span>)?
-                            </p>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
+    <header class="unenroll-header">
+      <h2 id="unenrollment-modal-title">
+        <span id='track-info'></span>
+        <span id='refund-info'></span>
+        <span class="sr">,
+          ## Translators: this text gives status on if the modal interface (a menu or piece of UI that takes the full focus of the screen) is open or not
+          ${_("window open")}
+        </span>
+      </h2>
+      <hr/>
+    </header>
     <div id="unenroll_error" class="modal-form-error"></div>
     <form id="unenroll_form" method="post" data-remote="true" action="${reverse('change_enrollment')}">
       <input name="course_id" id="unenroll_course_id" type="hidden" />
       <input name="enrollment_action" type="hidden" value="unenroll" />
-      <div class="modal-footer" style="padding: 1rem !important;">
-        <div class="form-actions d-flex w-100">
-          <button name="submit" type="submit" id="pwd_reset_button" class="action action-primary action-update btn btn-primary flex-grow-1 text-center">Wypisz się</button>
-        </div>
+      <div class="submit">
+        <input name="submit" type="submit" value="${_("Unenroll")}" />
       </div>
     </form>
   </div>
 </div>
+
 <%include file="dashboard/_dashboard_entitlement_unenrollment_modal.html"/>

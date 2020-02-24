@@ -75,7 +75,7 @@
         .btn {
           border: none;
           padding: 0;
-          color: $blue;
+          color: theme-color("primary");
           background: transparent;
 
           &:hover {

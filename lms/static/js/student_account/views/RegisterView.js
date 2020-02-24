@@ -31,7 +31,6 @@
                     'name',
                     'username',
                     'password',
-                    'confirm_password',
                     'email',
                     'confirm_email',
                     'country',

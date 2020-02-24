@@ -8,7 +8,6 @@
                     name: '',
                     username: '',
                     password: '',
-                    confirm_password: '',
                     level_of_education: '',
                     gender: '',
                     year_of_birth: '',

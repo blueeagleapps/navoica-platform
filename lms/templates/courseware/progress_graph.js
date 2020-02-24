@@ -116,7 +116,7 @@ $(function () {
             
             detail_tooltips[section['category'] + "-grade_breakdown"] = [ section['detail'] ]
   
-    ticks += [ [overviewBarX, "Łącznie"] ]
+    ticks += [ [overviewBarX, "Total"] ]
     tickIndex += 1 + sectionSpacer
   
   totalScore = grade_summary['percent']
