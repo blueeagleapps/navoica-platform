@@ -10,10 +10,6 @@ import openedx.core.djangoapps.common_views.xblock
 import openedx.core.djangoapps.debug.views
 import openedx.core.djangoapps.external_auth.views
 import openedx.core.djangoapps.lang_pref.views
-from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
-from django.views.generic import TemplateView
-from django.views.generic.base import RedirectView
-from machina.app import board
 
 from ratelimitbackend import admin
 
@@ -162,12 +158,6 @@ urlpatterns = [
     url(r'^api/val/v0/', include('edxval.urls')),
     url(r'^api/tasks/v0/', include('user_tasks.urls')),
     url(r'^accessibility$', contentstore.views.accessibility, name='accessibility'),
-    url(r'^forum/', include(board.urls)),
-]
-
-robots = TemplateView.as_view(template_name='robots.txt', content_type='text/plain')
-urlpatterns += [
-    url(r'^robots\.txt$', robots, name='robots')
 ]
 
 JS_INFO_DICT = {
@@ -273,8 +263,3 @@ urlpatterns += [
 from openedx.core.djangoapps.plugins import constants as plugin_constants, plugin_urls
 urlpatterns.extend(plugin_urls.get_patterns(plugin_constants.ProjectType.CMS))
 
-# Favicon
-favicon_path = configuration_helpers.get_value('favicon_path', settings.FAVICON_PATH)  # pylint: disable=invalid-name
-urlpatterns += [
-    url(r'^favicon\.ico$', RedirectView.as_view(url=settings.STATIC_URL + favicon_path, permanent=True)),
-]

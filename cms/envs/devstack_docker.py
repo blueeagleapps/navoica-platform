@@ -9,8 +9,9 @@ LOGGING['handlers']['local'] = LOGGING['handlers']['tracking'] = {
 
 LOGGING['loggers']['tracking']['handlers'] = ['console']
 
-LMS_BASE = os.environ.get('LMS_BASE', 'draft.navoica.pl')
-CMS_BASE = os.environ.get('CMS_BASE', 'studio-'+LMS_BASE)
+LMS_BASE = os.environ.get('LMS_BASE', '10.10.32.151:18000')
+CMS_BASE = os.environ.get('CMS_BASE', '10.10.32.151:18010')
+
 LMS_ROOT_URL = 'http://{}'.format(LMS_BASE)
 
 FEATURES.update({

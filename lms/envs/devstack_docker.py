@@ -9,8 +9,9 @@ LOGGING['handlers']['local'] = LOGGING['handlers']['tracking'] = {
 
 LOGGING['loggers']['tracking']['handlers'] = ['console']
 HOMEPAGE_COURSE_MAX = 4
-LMS_BASE = '10.10.32.151:18000'
-CMS_BASE = '10.10.32.151:18010'
+
+LMS_BASE = os.environ.get('LMS_BASE', '10.10.32.151:18000')
+CMS_BASE = os.environ.get('CMS_BASE', '10.10.32.151:18010')
 
 SITE_NAME = LMS_BASE
 LMS_ROOT_URL = 'http://{}'.format(LMS_BASE)
@@ -95,18 +96,18 @@ SERVER_EMAIL = 'devops@'+LMS_BASE
 # in it's path. Re-calling derive_settings doesn't work because the settings was already
 # changed from a function to a list, and it can't be derived again.
 
-# from .common import _make_mako_template_dirs
-#
-# SITE_ID = 1
-# # dir containing all themes
-# COMPREHENSIVE_THEME_DIRS = [REPO_ROOT / "themes"]
-# # Theme directory locale paths
-# COMPREHENSIVE_THEME_LOCALE_PATHS = []
-# # Theme to use when no site or site theme is defined,
-# # set to None if you want to use openedx theme
-# DEFAULT_SITE_THEME = 'navoica-theme'
-#
-# ENABLE_COMPREHENSIVE_THEMING = True
-#
-# TEMPLATES[1]["DIRS"] = _make_mako_template_dirs
-# derive_settings(__name__)
+from .common import _make_mako_template_dirs
+
+SITE_ID = 1
+# dir containing all themes
+COMPREHENSIVE_THEME_DIRS = [REPO_ROOT / "themes"]
+# Theme directory locale paths
+COMPREHENSIVE_THEME_LOCALE_PATHS = []
+# Theme to use when no site or site theme is defined,
+# set to None if you want to use openedx theme
+DEFAULT_SITE_THEME = 'navoica-theme'
+
+ENABLE_COMPREHENSIVE_THEMING = True
+
+TEMPLATES[1]["DIRS"] = _make_mako_template_dirs
+derive_settings(__name__)

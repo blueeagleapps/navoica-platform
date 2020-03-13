@@ -312,7 +312,7 @@ FEATURES = {
     # Whether archived courses (courses with end dates in the past) should be
     # shown in Studio in a separate list.
     'ENABLE_SEPARATE_ARCHIVED_COURSES': True,
-    
+
     'ALLOW_HIDING_DISCUSSION_TAB': True,
 }
 
