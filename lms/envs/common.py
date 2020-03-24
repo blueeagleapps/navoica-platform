@@ -1467,6 +1467,7 @@ PIPELINE_CSS = {
             #'css/polipedia.css',
             #'css/polipedia.custom.css',
             #'css/navoica.custom.css'
+            
 	  ],
         'output_filename': 'css/lms-style-vendor.css',
     },
@@ -1475,6 +1476,12 @@ PIPELINE_CSS = {
             'css/instructor/course-leader.css',
         ],
         'output_filename': 'css/instructor_dash.css'
+    },
+    'style-bookmarks' : {
+        'source_filenames' : [
+            'css/bookmarks/bookmarks.css',
+        ],
+        'output_filename': 'css/bookmark.css'
     },
     'style-vendor-tinymce-content': {
         'source_filenames': [
