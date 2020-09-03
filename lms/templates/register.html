@@ -48,6 +48,7 @@ import calendar
 
     });
 
+
     (function () {
         toggleSubmitButton(true);
 
@@ -71,6 +72,80 @@ import calendar
             }
         });
 
+        let validationPattern = {
+            email: {
+                message: 'Email error',
+                pattern: /^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/,
+            },
+            name: {
+                message: 'name error',
+                pattern: /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{2,255}$/,
+            },
+            username: {
+                message: _("Username must be between 2 and 255 characters long."),
+                pattern: /^[a-zA-Z0-9_-]{2,30}$/,
+            },
+            password: {
+                message: 'password error',
+                pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,75}$/,
+            },
+            confirm_password: {
+                message: 'confirm password error',
+                pattern: function(passwordVal, passwordConfirmVal) { return passwordVal === passwordConfirmVal }
+            },
+            terms_of_service: {
+                message: 'terms error',
+            },
+            honor_code: {
+                message: 'honor error'
+            }
+        };
+
+        function addMsgError(key) {
+            $('#' + key).attr('aria-invalid', true).addClass('error-field');
+            $('.js-' + key.replace(/_/g, '-') + '-field').find('.js-error-message').text(validationPattern[key].message);
+        }
+
+        function removeMsgError($this) {
+            $this.removeAttr('aria-invalid').removeClass('error-field');
+            $('.js-' + $this.attr('id').replace(/_/g, '-') + '-field').find('.js-error-message').text('');
+        }
+
+        function validateForm() {
+            $('input.js-register-field').each(function() {
+                for (let key in validationPattern) {
+
+                    if (validationPattern.hasOwnProperty(key) && $(this).prop('name') === key) {
+
+                        if ($(this).prop('name') === 'confirm_password') {
+                            if (validationPattern && validationPattern[key] && validationPattern[key].pattern($('#password').val(), $(this).val())) {
+                                let $this = $(this);
+                                removeMsgError($this);
+                            } else {
+                                addMsgError(key);
+                            }
+                        } else {
+                            if ($(this).prop('type') !== 'checkbox') {
+                                if (validationPattern && validationPattern[key] && validationPattern[key].pattern.test($(this).val())) {
+                                    let $this = $(this);
+                                    removeMsgError($this);
+                                } else {
+                                    addMsgError(key);
+                                }
+                            } else {
+                                if ($(this).is(':checked')) {
+                                    let $this = $(this);
+                                    removeMsgError($this);
+                                } else {
+                                    addMsgError(key);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
         $('#register-form').on('ajax:error', function (event, jqXHR, textStatus) {
             toggleSubmitButton(true);
             json = $.parseJSON(jqXHR.responseText);
@@ -79,7 +154,9 @@ import calendar
             $(".field-error").removeClass('field-error');
             $("[data-field='" + json.field + "']").addClass('field-error');
 
-            if (json.field) {
+            validateForm()
+
+            /**if (json.field) {
                 $('#' + json.field).attr('aria-invalid', true).addClass('error-field');
                 $('.js-' + json.field.replace(/_/g, '-') + '-field').find('.js-error-message').text(json.value);
 
@@ -97,7 +174,7 @@ import calendar
                         }
                     }
                 });
-            }
+            }**/
 
 
         });
