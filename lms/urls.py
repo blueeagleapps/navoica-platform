@@ -98,6 +98,9 @@ urlpatterns = [
     # Entitlement API RESTful endpoints
     url(r'^api/entitlements/', include('entitlements.api.urls', namespace='entitlements_api')),
 
+    # Navoica API RESTful endpoints
+    url(r'^api/navoica/', include('navoica_api.api.urls', namespace='navoica_api')),
+
     # Courseware search endpoints
     url(r'^search/', include('search.urls')),
 
@@ -667,10 +670,10 @@ urlpatterns += [
     ),
 
     # Learner profile
-    # url(
-    #     r'^u/',
-    #     include('openedx.features.learner_profile.urls'),
-    # ),
+    url(
+        r'^u/',
+        include('openedx.features.learner_profile.urls'),
+    ),
 
     # Learner analytics dashboard
     url(
