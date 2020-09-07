@@ -90,7 +90,7 @@ import calendar
                 pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,75}$/,
             },
             confirm_password: {
-                message: _('A valid password is required'),
+                message: _('Passwords Don\'t Match'),
                 pattern: function(passwordVal, passwordConfirmVal) { return passwordVal === passwordConfirmVal }
             },
             terms_of_service: {
