@@ -74,30 +74,30 @@ import calendar
 
         let validationPattern = {
             email: {
-                message: 'Email error',
+                message: _('A properly formatted e-mail is required'),
                 pattern: /^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/,
             },
             name: {
-                message: 'name error',
+                message: _('Your legal name must be a minimum of two characters long'),
                 pattern: /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{2,255}$/,
             },
             username: {
-                message: _("Username must be between 2 and 255 characters long."),
+                message: _('Username must be between 2 and 255 characters long.'),
                 pattern: /^[a-zA-Z0-9_-]{2,30}$/,
             },
             password: {
-                message: 'password error',
+                message: _('A valid password is required'),
                 pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,75}$/,
             },
             confirm_password: {
-                message: 'confirm password error',
+                message: _('A valid password is required'),
                 pattern: function(passwordVal, passwordConfirmVal) { return passwordVal === passwordConfirmVal }
             },
             terms_of_service: {
-                message: 'terms error',
+                message: _('You must accept the terms of service.'),
             },
             honor_code: {
-                message: 'honor error'
+                message: _('To enroll, you must follow the honor code.')
             }
         };
 
@@ -154,29 +154,7 @@ import calendar
             $(".field-error").removeClass('field-error');
             $("[data-field='" + json.field + "']").addClass('field-error');
 
-            validateForm()
-
-            /**if (json.field) {
-                $('#' + json.field).attr('aria-invalid', true).addClass('error-field');
-                $('.js-' + json.field.replace(/_/g, '-') + '-field').find('.js-error-message').text(json.value);
-
-                $('input.js-register-field').each(function() {
-
-                    if ($(this).prop('type') !== 'checkbox') {
-                        if ($(this).val() !== '') {
-                            $(this).removeAttr('aria-invalid').removeClass('error-field');
-                            $('.js-' + $(this).attr('id').replace(/_/g, '-') + '-field').find('.js-error-message').text('');
-                        }
-                    } else {
-                        if ($(this).is(':checked')) {
-                            $(this).removeAttr('aria-invalid').removeClass('error-field');
-                            $('.js-' + $(this).attr('id').replace(/_/g, '-') + '-field').find('.js-error-message').text('');
-                        }
-                    }
-                });
-            }**/
-
-
+            validateForm();
         });
     })(this);
 
