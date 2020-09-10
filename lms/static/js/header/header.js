@@ -70,6 +70,17 @@ $(document).ready(function() {
     }
 
     createMobileMenu();
+
+    const scrollToMainContent = function() {
+        $('.js-skip-link-scroll').on('keydown', function(e) {
+            let key = e.keyCode || e.which;
+            if (key === 13) {
+                $('html, body').animate({scrollTop: $('#skip-main').offset().top -100 }, 'slow');
+            }
+        });
+    }
+
+    scrollToMainContent();
 });
 
 
