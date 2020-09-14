@@ -75,29 +75,36 @@ import calendar
         let validationPattern = {
             email: {
                 message: _('A properly formatted e-mail is required'),
+                //fieldName: _('E-mail'),
                 pattern: /^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/,
             },
             name: {
                 message: _('Your legal name must be a minimum of two characters long'),
+                //fieldName: _('Full Name'),
                 pattern: /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{2,255}$/,
             },
             username: {
                 message: _('Username must be between 2 and 255 characters long.'),
+                //fieldName: _('Public Username'),
                 pattern: /^[a-zA-Z0-9_-]{2,30}$/,
             },
             password: {
                 message: _('A valid password is required'),
+                //fieldName: _('Password'),
                 pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,75}$/,
             },
             confirm_password: {
                 message: _('Passwords Don\'t Match'),
+                //fieldName: _('Confirm Password'),
                 pattern: function(passwordVal, passwordConfirmVal) { return passwordVal === passwordConfirmVal }
             },
             terms_of_service: {
                 message: _('You must accept the terms of service.'),
+                //fieldName: _('Terms of Service'),
             },
             honor_code: {
-                message: _('To enroll, you must follow the honor code.')
+                message: _('To enroll, you must follow the honor code.'),
+                //fieldName: _('Honor Code'),
             }
         };
 
@@ -109,6 +116,12 @@ import calendar
         function removeMsgError($this) {
             $this.removeAttr('aria-invalid').removeClass('error-field');
             $('.js-' + $this.attr('id').replace(/_/g, '-') + '-field').find('.js-error-message').text('');
+        }
+
+        function addMessageAlert(fieldName, errorMsg) {
+            //console.log('alert', fieldName, errorMsg);
+            //const message = $('<p><span>${fieldName}:</span> ${errorMsg}</p>');
+            //$('.js-alert-error-message').append(message);
         }
 
         function validateForm() {
@@ -123,6 +136,9 @@ import calendar
                                 removeMsgError($this);
                             } else {
                                 addMsgError(key);
+                                //const field = validationPattern && validationPattern[key] && validationPattern[key].fieldName;
+                                //const msg = validationPattern && validationPattern[key] && validationPattern[key].message;
+                                //addMessageAlert(field, msg);
                             }
                         } else {
                             if ($(this).prop('type') !== 'checkbox') {
@@ -131,6 +147,9 @@ import calendar
                                     removeMsgError($this);
                                 } else {
                                     addMsgError(key);
+                                    //const field = validationPattern && validationPattern[key] && validationPattern[key].fieldName;
+                                    //const msg = validationPattern && validationPattern[key] && validationPattern[key].message;
+                                    //addMessageAlert(field, msg);
                                 }
                             } else {
                                 if ($(this).is(':checked')) {
@@ -138,6 +157,9 @@ import calendar
                                     removeMsgError($this);
                                 } else {
                                     addMsgError(key);
+                                    //const field = validationPattern && validationPattern[key] && validationPattern[key].fieldName;
+                                    //const msg = validationPattern && validationPattern[key] && validationPattern[key].message;
+                                    //addMessageAlert(field, msg);
                                 }
                             }
                         }

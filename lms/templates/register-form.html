@@ -15,7 +15,7 @@ from student.models import UserProfile
 
 <div id="alert-primary" role="alert" class="status message submission-error" tabindex="-1">
     <h3 class="message-title">${_("The following errors occurred while processing your registration:")}</h3>
-    <ul class="message-copy"></ul>
+    <ul class="message-copy js-alert-error-message"></ul>
 </div>
 
 % if third_party_auth.is_enabled():
@@ -78,13 +78,13 @@ from student.models import UserProfile
         <div class="field text form-group form-group-required js-email-field" id="field-email">
             <label for="email">${_('E-mail')}<sup><i class="fa fa-asterisk text-navoica-red pr-1 f-10" aria-hidden="true"></i><span class="text-navoica-red f-14">(${_('required')})</span></sup></label>
             <input class="form-control js-register-field" id="email" type="email" name="email" value="${email}" placeholder="${_('example: username@domain.com')}" spellcheck="false" autocomplete="on" required aria-required="true"/>
-            <small aria-atomic="true" aria-live="assertive" class="js-error-message text-navoica-red"></small>
+            <small aria-atomic="true" aria-live="assertive" class="js-error-message text-navoica-red d-flex"></small>
         </div>
 
         <div class="field text form-group form-group-required js-name-field" id="field-name">
             <label for="name">${_('Full Name')}<sup><i class="fa fa-asterisk text-navoica-red pr-1 f-10" aria-hidden="true"></i><span class="text-navoica-red f-14">(${_('required')})</span></sup></label>
             <input class="form-control js-register-field" id="name" type="text" name="name" value="${name}" placeholder="${_('example: Jane Doe')}" required aria-required="true" aria-describedby="name-tip"/>
-            <small aria-atomic="true" aria-live="assertive" class="js-error-message text-navoica-red"></small>
+            <small aria-atomic="true" aria-live="assertive" class="js-error-message text-navoica-red d-flex"></small>
             <span class="tip tip-input" id="name-tip">${_("Your legal name, used for any certificates you earn.")}</span>
         </div>
         <div class="field text form-group form-group-required js-username-field" id="field-username">
