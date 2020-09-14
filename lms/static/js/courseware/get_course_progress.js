@@ -18,19 +18,21 @@ function getCourseProgressReq(usernameArg, courseIdArg, urlOriginArg) {
     const sendRequest = function(username, courseId) {
         let endpoint = `/api/navoica/v1/progress/${username}/courses/${courseId}`;
 
-        $.ajax({
-            url: urlOriginPath + endpoint,
-            type: 'GET',
-            contentType: 'application/json',
-            dataType: 'json',
-            success: function(result){
-                if (result) {
-                    let percentage = Math.round(result.completion_value * 100);
-                    $('.progress-bar').css('width', percentage + '%').attr('aria-valuenow', percentage);
-                    $('.js-percentage-progress').text(percentage + '%');
+        if (courseId) {
+            $.ajax({
+                url: urlOriginPath + endpoint,
+                type: 'GET',
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function(result){
+                    if (result) {
+                        let percentage = Math.round(result.completion_value * 100);
+                        $('.progress-bar').css('width', percentage + '%').attr('aria-valuenow', percentage);
+                        $('.js-percentage-progress').text(percentage + '%');
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     $learnerUsername.on('change', function() {
