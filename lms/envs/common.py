@@ -290,7 +290,7 @@ FEATURES = {
     'ENABLE_EDXNOTES': False,
 
     # Milestones application flag
-    'MILESTONES_APP': False,
+    'MILESTONES_APP': True,
 
     # Organizations application flag
     'ORGANIZATIONS_APP': False,
@@ -1162,7 +1162,8 @@ CREDIT_NOTIFICATION_CACHE_TIMEOUT = 5 * 60 * 60
 
 ######################### Navoica Branding ###################################
 
-HEADER_NAVOICA_LOGO_IMAGE = "/static/images/logo-light-bg.svg"
+HEADER_NAVOICA_LOGO_IMAGE = "images/logo-light-bg.svg"
+OG_NAVOICA_LOGO_IMAGE = "images/logo-light-bg.png"
 
 ################################# Middleware ###################################
 
@@ -2298,7 +2299,7 @@ INSTALLED_APPS = [
     'openedx.features.course_experience',
     'openedx.features.course_search',
     'openedx.features.enterprise_support.apps.EnterpriseSupportConfig',
-    'openedx.features.learner_profile',
+    # 'openedx.features.learner_profile',
     'openedx.features.learner_analytics',
     'openedx.features.portfolio_project',
 
@@ -2311,6 +2312,9 @@ INSTALLED_APPS = [
     'poll',
 
     'xblock_jupyter_graded',
+
+    # Navoica API
+    'navoica_api',
 ]
 
 ######################### CSRF #########################################
@@ -2733,7 +2737,8 @@ ALL_COURSE_ORGANIZER = [
     [u"40", _(u"West Pomeranian University of Technology in Szczecin")],
     [u"41", _(u"Copernicus Science Centre")],
     [u"42", _(u"Pomeranian University in Słupsk")],
-    [u"43", _(u"Collegium Humanum – Warsaw Management University")]
+    [u"43", _(u"Collegium Humanum – Warsaw Management University")],
+    [u"44", _(u"Parlament Studentów Rzeczypospolitej Polskiej")]
 ]
 
 ALL_COURSE_ORGANIZER_DICT = dict(ALL_COURSE_ORGANIZER)
@@ -2773,7 +2778,7 @@ COURSE_DISCOVERY_MEANINGS = {
         'terms': {b[0]: b[1] for b in ALL_COURSE_CATEGORY},
     },
     'organizer': {
-        'name': (u'Institution'),
+        'name': _(u'Institution'),
         'terms': {b[0]: b[1] for b in ALL_COURSE_ORGANIZER},
     },
     'difficulty': {
